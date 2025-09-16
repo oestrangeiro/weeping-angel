@@ -37,10 +37,9 @@ $routes->post('admin/edit-user', 'AdminController::editUser', ['filter' => 'auth
 $routes->post('admin/delete-user', 'AdminController::softDeleteUser', ['filter' => 'auth:admin']);
 
 // MÁQUINAS
-$routes->post('admin/add-machine', 'MachineController::addMachine', ['filter' => 'auth:admin']);
+$routes->post('admin/add-machine', 'MachineController::addMachine', ['filter' => 'auth']);
 $routes->post('admin/edit-machine', 'MachineController::editMachine', ['filter' => 'auth:admin']);
 $routes->post('admin/delete-machine', 'MachineController::softDeleteMachine', ['filter' => 'auth:admin']);
 $routes->post('machine/maintenance', 'MaintenanceController::createMaintenance', ['filter' => 'auth']);
 $routes->post('machine/maintenance/finish-maintenance', 'MaintenanceController::finishMaintenance', ['filter' => 'auth']);
 
-// $routes->post('machines/maintenance', 'MachineController::maintenance');
