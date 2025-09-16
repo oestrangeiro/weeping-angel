@@ -22,11 +22,11 @@ class DashboardController extends BaseController{
     public function index(){
 
         // Checa se o usuário está logado
-        if(!session()->get('loggedIn')){
-            return redirect()->to('/')->with(
-                'error_message', 'Você precisa estar logado para acessar essa página'
-            );
-        }
+        // if(!session()->get('loggedIn')){
+        //     return redirect()->to('/')->with(
+        //         'error_message', 'Você precisa estar logado para acessar essa página'
+        //     );
+        // }
 
         $userCPFInSession = session()->get('cpf');
 

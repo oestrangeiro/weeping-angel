@@ -144,6 +144,8 @@ class AdminController extends BaseController {
         $pager = $this->userModel->pager;
 
         return  view('includes/header') .
+                view('includes/alerts') .
+                view('includes/sidebar') .
                 view('dashboard/users/listAllUsers', [
                     "usersActives" => $users,
                     "pager"        => $pager

@@ -1,4 +1,4 @@
-<div class="main pb-3">
+<div class="main py-3">
     <div class="text-center">
         <h1>Weeping Angel - Protótipo 0.1</h1>
         <h2>Adicionar usuário</h2>

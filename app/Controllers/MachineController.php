@@ -100,6 +100,7 @@ class MachineController extends BaseController{
         $allMachines = $this->machineModel->getAllMachinesActives();
 
         return  view('includes/header') .
+                view('includes/alerts') .
                 view('includes/sidebar') .
                 view('dashboard/machines/listAllMachines', ["machinesActives" => $allMachines]) .
                 view('includes/footer');
