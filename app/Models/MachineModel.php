@@ -14,7 +14,10 @@ class MachineModel extends Model {
 
     // Método que informa se uma máquina já existe no banco de dados
     public function machineAlreadyExists(string $machineTomb): bool {
-        $machine = $this->select('id')->where('tombamento', $machineTomb)->find();
+        $machine = $this->select('id')
+        ->where('tombamento', $machineTomb)
+        ->where('soft_delete', 0)
+        ->find();
 
         // Se existe, eu retorno true
         if($machine){
@@ -25,7 +28,9 @@ class MachineModel extends Model {
 
     // Outro método que verifica se uma máquina existe, mas pelo id
     public function machineAlreadyExistsByID(string $machineID): bool{
-        $machine = $this->select('id')->where('id', $machineID)->find();
+        $machine = $this->select('id')
+        ->where('id', $machineID)
+        ->find();
 
         if($machine){
             return true;

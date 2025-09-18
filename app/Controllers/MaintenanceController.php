@@ -195,12 +195,16 @@ class MaintenanceController extends BaseController {
         // A proxima manutençao vai ser a data de hj + 3 meses
         $nextMaintenanceDate = $currentDateObj->modify('+' . $this::MINIMAL_MONTHS_TO_NEXT_MAINTENANCE . ' month');
         $nextMaintenanceDateFormated = $nextMaintenanceDate->format('Y-m-d');
-
+        
+        $idLastResponsableByMaintenance = $this->userModel->getUserIDByCPF($_SESSION['cpf']);
+        
         $maintenanceDataToUpdateIntoDB = [
-            'id'                 => $idMaintenance,
-            'ultima_manutencao'  => $lastMaintenanceDate,
-            'proxima_manutencao' => $nextMaintenanceDateFormated
+            'id'                                       => $idMaintenance,
+            'fk_id_prestador_de_servico_responsavel'   => $idLastResponsableByMaintenance,
+            'ultima_manutencao'                        => $lastMaintenanceDate,
+            'proxima_manutencao'                       => $nextMaintenanceDateFormated
         ];
+ 
 
         // dd($maintenanceDataToUpdateIntoDB);
 

@@ -23,11 +23,12 @@ class MaintenanceModel extends Model {
     // metodos porra
 
     public function getAllMaintenancesByUserID(string $userID){
-        $usersMaintenances = $this->select('manutencoes_tb.id, ultima_manutencao, proxima_manutencao, manutencoes_tb.comentario, maquinas_tb.tombamento, maquinas_tb.soft_delete')
+        $usersMaintenances = $this->select('manutencoes_tb.id, ultima_manutencao, proxima_manutencao, manutencoes_tb.comentario, maquinas_tb.tombamento, maquinas_tb.soft_delete, fk_id_prestador_de_servico_responsavel, prestadores_de_servico_tb.nome')
             ->join('maquinas_tb', 'maquinas_tb.id = manutencoes_tb.fk_id_maquina')
+            ->join('prestadores_de_servico_tb', 'prestadores_de_servico_tb.id = manutencoes_tb.fk_id_prestador_de_servico_responsavel')
             ->where('manutencao_feita', 0)
             ->where('maquinas_tb.soft_delete', 0)
-            ->where('fk_id_prestador_de_servico_responsavel', $userID)
+            // ->where('fk_id_prestador_de_servico_responsavel', $userID)
             ->findAll();
 
         if(!$usersMaintenances){

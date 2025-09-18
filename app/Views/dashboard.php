@@ -21,6 +21,7 @@
                         <h3 class="card-title">Tombamento: <?= $manutencao['tombamento'] ?></h3><hr>
                         <h4 class="card-text">Data da última manutenção: <strong><?= $manutencao['ultima_manutencao']; ?></strong></h4>
                         <h4 class="card-text">Data prevista para a próxima manutenção: <strong><?= $manutencao['proxima_manutencao']; ?></strong></h4>
+                        <h4 class="card-text">Técnico responsável pela última manutenção: <strong><?= $manutencao['nome']; ?></strong></h4>
                         <h5 class="card-text">
                             <div class="mb-2">
                                 <strong>Comentário do usuário:</strong>    
