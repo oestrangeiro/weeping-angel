@@ -239,7 +239,7 @@ class AdminController extends BaseController {
             'nome'  => $name,
             'cpf'   => $cpf,
             'email' => $email,
-            'cargo' => 'usuario' ? 'usuario' : 'admin'
+            'cargo' => $role == 'usuario' ? 'usuario' : 'admin'
         ];
 
         if(!$this->userModel->updateUserData($userData)){
