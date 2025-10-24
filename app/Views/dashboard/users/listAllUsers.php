@@ -11,6 +11,7 @@
                     <th scope="col">Nome</th>
                     <th scope="col">Cargo</th>
                     <th scope="col">Email</th>
+                    <th scope="col">CPF</th>
                     <th scope="col">Criado em</th>
                     <th scope="col">Editado em</th>
                     <th scope="col">Ações</th>
@@ -23,17 +24,109 @@
                     <td scope="col"><?= $user['nome']; ?></td>
                     <td scope="col"><?= $user['cargo']; ?></td>
                     <td scope="col"><?= $user['email']; ?></td>
+                    <td scope="col"><?= $user['cpf']; ?></td>
                     <td scope="col"><?= $user['created_at']; ?></td>
                     <td scope="col"><?= $user['updated_at']; ?></td>
-                    <div>
+                    <td class="">
+                        <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#edit-user-modal"
+                            data-id="<?= $user['id'] ?>"
+                            data-name="<?= $user['nome'] ?>"
+                            data-role="<?= $user['cargo'] ?>"
+                            data-email="<?= $user['email'] ?>"
+                            data-cpf="<?= $user['cpf'] ?>"
+                        >Editar</button>
+                        <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#softdelete-user-modal"
+                        >Remover</button>
+                    </td>
+                    <!-- <div>
                         <td>
                             <button class="btn btn-alert">Editar</button>
                             <button class="btn btn-alert">Remover</button>
                         </td>
-                    </div>
+                    </div> -->
                 </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
 </div>
+
+<!-- Modal para editar a porra do usuário -->
+<div class="modal fade" id="edit-user-modal" tabindex="-1" aria-labelledby="edit-user-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="edit-user-modal-label">Editar informações do usuário</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+
+            <form action="<?= site_url('admin/edit-user') ?>" method="POST">
+                <input type="hidden" id="user-id" name="user-id">
+                <div class="modal-body">
+                    <!-- Nome -->
+                    <div class="mb-3">
+                        <label for="user-name" class="form-label">Nome</label>
+                        <input type="text" id="user-name" name="user-name" class="form-control">
+                    </div>
+                    <!-- cargo -->
+                    <div class="mb-3">
+                        <label for="user-role" class="form-label">Cargo</label>
+                        <select class="form-select" id="user-role" name="user-role">
+                            <option value="usuario">Usuário</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <!-- email -->
+                    <div class="mb-3">
+                        <label for="user-email" class="form-label">Email</label>
+                        <input type="email" id="user-email" name="user-email" class="form-control">
+                    </div>
+                    <!-- cpf -->
+                     <div class="mb-3">
+                        <label for="user-cpf" class="form-label">CPF</label>
+                        <input type="text" id="user-cpf" name="user-cpf" class="form-control">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Editar</button>
+                    <button type="reset" class="btn btn-secondary">Limpar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    // console.log("script rodando...");
+    const editUserModal = document.getElementById('edit-user-modal');
+    editUserModal.addEventListener('show.bs.modal', function (event) {
+
+        const button    = event.relatedTarget;
+
+        const id        = button.getAttribute('data-id');
+        const name      = button.getAttribute('data-name');
+        const role      = button.getAttribute('data-role');
+        const email     = button.getAttribute('data-email');
+        const cpf       = button.getAttribute('data-cpf');
+
+        document.getElementById('user-id').value    = id;
+        document.getElementById('user-name').value  = name;
+        document.getElementById('user-role').value  = role;
+        document.getElementById('user-email').value = email;
+        document.getElementById('user-cpf').value   = cpf;
+
+    });
+
+    // const deleteMachineModal = document.getElementById('softdelete-machine-modal');
+    // deleteMachineModal.addEventListener('show.bs.modal', function (event) {
+    //     const button = event.relatedTarget;
+    //     const id = button.getAttribute('data-id');
+    //     const tomb = button.getAttribute('data-tomb');
+
+    //     document.getElementById('machine-id-delete').value = id;
+    //     document.getElementById('machine-tomb-delete').value = tomb;
+
+    //     document.getElementById('tombamento-exibido').textContent = tomb;
+    // });
+
+</script>

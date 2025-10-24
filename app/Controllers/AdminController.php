@@ -101,7 +101,7 @@ class AdminController extends BaseController {
         // CARGO
         // Talvez desnecessário, mas vai que algum gaiatinho tenta alterar o select no frontend...
         $enumRoles = [
-            'user',
+            'usuario',
             'admin'
         ];
         // Acho que ainda dá pra melhorar, mas depois me preocupo com isso
@@ -122,7 +122,7 @@ class AdminController extends BaseController {
             'email' => $userEmailSanitized,
             'cpf'   => $userCPFSanitized,
             'senha' => $userPasswordEnc,
-            'cargo' => $userRole == 'user' ? 'usuario' : 'admin'
+            'cargo' => $userRole == 'usuario' ? 'usuario' : 'admin'
         ];
 
         if($this->userModel->insert($userDataToInsert)){
@@ -153,4 +153,103 @@ class AdminController extends BaseController {
                 view('includes/footer');
     }
     
+    // Método para softdeletar um usuário
+    public function softDeleteUser(){
+
+        $userID  = $this->request->getPost('user-id');
+
+        // Estou pegando o cpf para fazer uma validação de integridade dos dados
+        $userCPF = $this->request->getPost('user-cpf');
+
+        dd([$userID, $userCPF]);
+    }
+
+    // Editar o cara
+    public function editUser(){
+
+        $id     = $this->request->getPost('user-id')    ?? null;
+        $name   = $this->request->getPost('user-name')  ?? null;
+        $cpf    = $this->request->getPost('user-cpf')   ?? null;
+        $email  = $this->request->getPost('user-email') ?? null;
+        $role   = $this->request->getPost('user-role')  ?? null;
+
+        // dd([$id, $name, $cpf, $email, $role]);
+
+        $isThereSomeFieldEmpty = $this->isSomeValueNull([$id, $name, $cpf, $email, $role]);
+
+        if($isThereSomeFieldEmpty){
+            return redirect()->to('users/see-all')->with(
+                'error_message', 'Um ou mais campos vazios!'
+            );
+        }
+
+        // Sanitização e validação das informações
+        // ID
+        // Checo se existe algum usuário com esse ID
+        $userExists = $this->userModel->checksIfUserAlreadyExistsById($id);
+
+        if(!$userExists){
+            return redirect()->to('users/see-all')->with(
+                'error_message', 'Erro ao editar informações do usuário!'
+            );
+        }
+
+        // NOME
+        $nameSanitized = $this->escapeEntry($name);
+        
+        // CPF
+        $cpf            = $this->sanitizeCPF($cpf);
+        $isThisCPFValid = $this->isAValidCPF($cpf);
+
+        if(!$isThisCPFValid){
+            return redirect()->to('users/see-all')->with(
+                'error_message', 'CPF inválido!'
+            );
+        }
+
+        // EMAIL
+        $email = $this->sanitizeEmail($email);
+        $isThisEmailValid = $this->isThisEmailValid($email);
+
+        if(!$isThisEmailValid){
+            return redirect()->to('users/see-all')->with(
+                'error_message', 'Email inválido!'
+            );
+        }
+
+        $enumRoles = [
+            'usuario',
+            'admin'
+        ];
+        // Acho que ainda dá pra melhorar, mas depois me preocupo com isso
+        foreach($enumRoles as $r){
+            if($r == $role){
+                break;
+            }else{
+                continue;
+            }
+            return redirect()->back()->with(
+                'error_message', 'O cargo informado é inválido, tente novamente!'
+            );
+        }
+
+        // Fazendo o update no banco
+        $userData = [
+            'id'    => $id,
+            'nome'  => $name,
+            'cpf'   => $cpf,
+            'email' => $email,
+            'cargo' => 'usuario' ? 'usuario' : 'admin'
+        ];
+
+        if(!$this->userModel->updateUserData($userData)){
+            return redirect()->back()->with(
+                'error_message', 'Erro ao editar informações do usuário, tente novamente!'
+            );
+        }
+
+        return redirect()->back()->with(
+            'success_message', 'Informações do usuário atualizadas com sucesso!'
+        );
+    }
 }

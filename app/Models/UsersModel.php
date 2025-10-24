@@ -59,7 +59,7 @@ class UsersModel extends Model{
 
     // Método para retornar todos os usuários ativos no banco
     public function getAllUsersActive(){
-        $users = $this->select('id, nome, cargo, email, created_at, updated_at')->where('soft_delete', 0)->findAll();
+        $users = $this->select('id, nome, cpf, cargo, email, created_at, updated_at')->where('soft_delete', 0)->findAll();
         // $users = $this->select('id, nome, cargo, email, created_at, updated_at')->where('soft_delete', 0)->paginate($usersPerPage);
 
         return $users;
@@ -80,5 +80,14 @@ class UsersModel extends Model{
         }
 
         return $userID[0]['id'];
+    }
+
+    // Método para fazer atualização de uma máquina no banco de dados
+    public function updateUserData(array $userData): bool{
+
+        if($this->update($userData['id'], $userData)){
+            return true;
+        }
+        return false;
     }
 }
