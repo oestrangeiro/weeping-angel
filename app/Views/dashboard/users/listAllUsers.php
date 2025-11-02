@@ -36,6 +36,9 @@
                             data-cpf="<?= $user['cpf'] ?>"
                         >Editar</button>
                         <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#softdelete-user-modal"
+                            data-id="<?= $user['id'] ?>"
+                            data-name="<?= $user['nome'] ?>"
+                            data-cpf="<?= $user['cpf'] ?>"
                         >Remover</button>
                     </td>
                     <!-- <div>
@@ -61,17 +64,17 @@
             </div>
 
             <form action="<?= site_url('admin/edit-user') ?>" method="POST">
-                <input type="hidden" id="user-id" name="user-id">
+                <input type="hidden" id="edit-user-id" name="user-id">
                 <div class="modal-body">
                     <!-- Nome -->
                     <div class="mb-3">
                         <label for="user-name" class="form-label">Nome</label>
-                        <input type="text" id="user-name" name="user-name" class="form-control">
+                        <input type="text" id="edit-user-name" name="user-name" class="form-control">
                     </div>
                     <!-- cargo -->
                     <div class="mb-3">
                         <label for="user-role" class="form-label">Cargo</label>
-                        <select class="form-select" id="user-role" name="user-role">
+                        <select class="form-select" id="edit-user-role" name="user-role">
                             <option value="usuario">Usuário</option>
                             <option value="admin">Admin</option>
                         </select>
@@ -79,12 +82,12 @@
                     <!-- email -->
                     <div class="mb-3">
                         <label for="user-email" class="form-label">Email</label>
-                        <input type="email" id="user-email" name="user-email" class="form-control">
+                        <input type="email" id="edit-user-email" name="user-email" class="form-control">
                     </div>
                     <!-- cpf -->
                      <div class="mb-3">
                         <label for="user-cpf" class="form-label">CPF</label>
-                        <input type="text" id="user-cpf" name="user-cpf" class="form-control">
+                        <input type="text" id="edit-user-cpf" name="user-cpf" class="form-control">
                     </div>
                 </div>
 
@@ -96,6 +99,39 @@
         </div>
     </div>
 </div>
+
+<!-- Modal para editar a porra do usuário -->
+<div class="modal fade" id="softdelete-user-modal" tabindex="-1" aria-labelledby="softdelete-user-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="softdelete-user-modal">Deletar usuário</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+
+            <form action="<?= site_url('admin/delete-user') ?>" method="POST">
+                <input type="hidden" id="softdelete-user-id" name="user-id">
+                <div class="modal-body">
+                    <!-- Nome -->
+                    <div class="mb-3">
+                        <label for="user-name" class="form-label">Nome</label>
+                        <input type="text" id="softdelete-user-name" name="user-name" class="form-control">
+                    </div>
+                    <!-- cpf -->
+                     <div class="mb-3">
+                        <label for="user-cpf" class="form-label">CPF</label>
+                        <input type="text" id="softdelete-user-cpf" name="user-cpf" class="form-control">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Deletar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     // console.log("script rodando...");
     const editUserModal = document.getElementById('edit-user-modal');
@@ -109,24 +145,27 @@
         const email     = button.getAttribute('data-email');
         const cpf       = button.getAttribute('data-cpf');
 
-        document.getElementById('user-id').value    = id;
-        document.getElementById('user-name').value  = name;
-        document.getElementById('user-role').value  = role;
-        document.getElementById('user-email').value = email;
-        document.getElementById('user-cpf').value   = cpf;
+        document.getElementById('edit-user-id').value    = id;
+        document.getElementById('edit-user-name').value  = name;
+        document.getElementById('edit-user-role').value  = role;
+        document.getElementById('edit-user-email').value = email;
+        document.getElementById('edit-user-cpf').value   = cpf;
 
     });
 
-    // const deleteMachineModal = document.getElementById('softdelete-machine-modal');
-    // deleteMachineModal.addEventListener('show.bs.modal', function (event) {
-    //     const button = event.relatedTarget;
-    //     const id = button.getAttribute('data-id');
-    //     const tomb = button.getAttribute('data-tomb');
+    const softDeleteUserModal = document.getElementById('softdelete-user-modal');
+    softDeleteUserModal.addEventListener('show.bs.modal', function (event) {
+        
+        const button    = event.relatedTarget;
 
-    //     document.getElementById('machine-id-delete').value = id;
-    //     document.getElementById('machine-tomb-delete').value = tomb;
+        const id        = button.getAttribute('data-id');
+        const name      = button.getAttribute('data-name');
+        const cpf       = button.getAttribute('data-cpf');
 
-    //     document.getElementById('tombamento-exibido').textContent = tomb;
-    // });
+        document.getElementById('softdelete-user-id').value    = id;
+        document.getElementById('softdelete-user-name').value  = name;
+        document.getElementById('softdelete-user-cpf').value   = cpf;
+
+    });
 
 </script>

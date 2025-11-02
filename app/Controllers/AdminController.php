@@ -156,12 +156,64 @@ class AdminController extends BaseController {
     // Método para softdeletar um usuário
     public function softDeleteUser(){
 
-        $userID  = $this->request->getPost('user-id');
-
+        $userID     = $this->request->getPost('user-id')    ?? null;
+        $userName   = $this->request->getPost('user-name')  ?? null;
         // Estou pegando o cpf para fazer uma validação de integridade dos dados
-        $userCPF = $this->request->getPost('user-cpf');
+        $userCPF    = $this->request->getPost('user-cpf')   ?? null;
 
-        dd([$userID, $userCPF]);
+        $isThereSomeFieldEmpty = $this->isSomeValueNull([$userID, $userName, $userCPF]);
+
+        if($isThereSomeFieldEmpty){
+            return redirect()->to('users/see-all')->with(
+                'error_message', 'Um ou mais campos vazios!'
+            );
+        }
+
+        // Verificando e validando as informções
+        // ID
+        $userExists = $this->userModel->checksIfUserAlreadyExistsById($userID);
+
+        if(!$userExists){
+            return redirect()->to('users/see-all')->with(
+                'error_message', 'Um ou mais dados inválidos!'
+            );
+        }
+
+        // Retorna 0 se forem iguais
+        $userNameIsCorrect = strcmp(
+            $userName,
+            $this->userModel->getUserName($userCPF)
+        );
+
+        if($userNameIsCorrect !== 0){
+            return redirect()->to('users/see-all')->with(
+                'error_message', 'Um ou mais dados inválidos!'
+            );
+        }
+
+        // CPF
+        $isThisCPFValid = $this->isAValidCPF($userCPF);
+
+        if(!$isThisCPFValid){
+            return redirect()->to('users/see-all')->with(
+                'error_message', 'Um ou mais dados inválidos!'
+            );
+        }
+
+        $userData = [
+            'id'            => $userID,
+            'soft_delete'   => 1
+        ];
+
+        if(!$this->userModel->softDeleteUser($userData)){
+            return redirect()->to('users/see-all')->with(
+                'error_message', 'Não foi possível atualizar informações do usuário!'
+            );
+        }
+
+        return redirect()->to('users/see-all')->with(
+            'success_message', 'Usuário deletado com sucesso!'
+        );
     }
 
     // Editar o cara

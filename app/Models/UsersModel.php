@@ -34,8 +34,11 @@ class UsersModel extends Model{
     }
 
     // Método para 'softdelete' um usuário
-    public function softDeleteUser(string $userID){
+    public function softDeleteUser(array $userDataArray){
         // fazer update do campo soft_delete para 1
+        if($this->update($userDataArray['id'], $userDataArray)){
+            return true;
+        }
     }
 
     // Método que lista todos os usuários deletados
