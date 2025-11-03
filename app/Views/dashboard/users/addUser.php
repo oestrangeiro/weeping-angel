@@ -31,7 +31,7 @@
                     <label for="user-role" class="col-form-label col-2">Cargo:</label>
                     <div class="col-sm-10 mb-3">
                         <select class="form-select" name="user-role">
-                            <option value="user" selected>Usuário</option>
+                            <option value="usuario" selected>Usuário</option>
                             <option value="admin">Admin</option>
                         </select>
                     </div>
