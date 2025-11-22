@@ -21,19 +21,18 @@ class DashboardController extends BaseController{
 
     public function index(){
 
-        // Checa se o usuário está logado
-        // if(!session()->get('loggedIn')){
-        //     return redirect()->to('/')->with(
-        //         'error_message', 'Você precisa estar logado para acessar essa página'
-        //     );
-        // }
-
         $userCPFInSession = session()->get('cpf');
 
         $userID = $this->userModel->getUserIDByCPF($userCPFInSession);
 
         $manutencoesDoUsuario = $this->maintenanceModel->getAllMaintenancesByUserID($userID);
+        // Colocando o nome do cara logado na sessão
+        // pra poder mostrar sempre na dashboard
+        $userName = $this->userModel->getUserName($userCPFInSession);
 
+        $session = session();
+        $session->set('userName', $userName);
+        
         // Caso o usuário não tenha nenhuma manutenção sob a responsabilidade dele
         // redireciono ele para uma view específica
         if(!$manutencoesDoUsuario){
@@ -43,12 +42,10 @@ class DashboardController extends BaseController{
                     view('includes/footer');
         }
 
-        // pegando o nome do cara
-        $userName = $this->userModel->getUserName($userCPFInSession);
 
         return  view('includes/header') .
                 view('includes/alerts') .
-                view('includes/sidebar', ['userName' => $userName]) .
+                view('includes/sidebar') .
                 view('dashboard', ['manutencoesDoUsuario' => $manutencoesDoUsuario]) .
                 view('includes/footer');
     }

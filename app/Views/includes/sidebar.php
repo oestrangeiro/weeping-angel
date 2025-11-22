@@ -1,5 +1,4 @@
 <!-- Sidebar com as paradas -->
- <?php //dd($userName); ?>
  <div class="wrapper">
     <aside id="sidebar">
         <div class="d-flex">
@@ -13,6 +12,14 @@
         <ul class="sidebar-nav">
             <!-- dropdown máquinas -->
             <li class="sidebar-item">
+                <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse"
+                data-bs-target="#username">
+                    <i class="bi bi-person-check-fill"></i>
+                    <span>Usuário: <?php 
+                        $session = session();
+                        echo $session->get('userName');
+                    ?></span>
+                </a>
                 <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse"
                 data-bs-target="#machines">
                     <i class="bi bi-pc-display-horizontal"></i>

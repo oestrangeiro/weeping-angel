@@ -152,7 +152,7 @@ class MaintenanceController extends BaseController {
         $idHasOnlyDigits = $this->onlyDigits($idMaintenance);
 
         if(!$idHasOnlyDigits){
-            return redirect()->back()->with(
+            return redirect()->to('/')->with(
                 'error_message',  'ID inválido!'
             );
         }
